@@ -1,0 +1,127 @@
+name: mspr_bloc_4 # cCommande qui nomme le conteneur parent de l'application
+
+services: # Commande qui liste les  différents services de l'application FutureKawa
+# -----------
+# BDD métier
+# ----------
+  db: # image de la BDD
+    image: mysql:8.0
+    container_name: futurekawa-db
+    command: --lower_case_table_names=1
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=futurekawa
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./futurekawa.sql:/docker-entrypoint-initdb.d/1_structure.sql
+      - ./kawa_seed.sql:/docker-entrypoint-initdb.d/2_seed.sql
+    networks:
+      - futurekawa
+
+# -----------
+# PARTIE BACKEND
+# ----------
+  web: # image du Backend
+    build:
+      context: ./MSPR1/    # Commande qui pointe vers le dossier de l'API
+      dockerfile: Dockerfile
+    container_name: futurekawapp
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=secret
+      - DB_NAME=futurekawa
+      - JWT_SECRET_KEY=c0d46ff96e5372e4ea70aed573d1dba656b2564d340d9ba3ea33cbf4afe541b6
+      - JWT_ACCESS_TOKEN_EXPIRES=24
+      - JWT_ALGORITHM="HS256"
+      - BCRYPT_ROUNDS=12
+    depends_on:
+      - db
+    networks:
+      - futurekawa
+
+# -----------
+# PARTIE FRONTEND
+# ----------
+  front: # image du Frontend
+    build:
+      context: ./futureKawaFront   # Commande qui pointe vers le dossier du front
+      dockerfile: Dockerfile
+    container_name: futurekawa-front
+    restart: always
+    ports:
+      - "9090:80"
+    depends_on:
+      - web
+    networks:
+      - futurekawa
+
+# -----------
+# BDD IOT
+# ----------
+  db_iot:
+    container_name: iot_db
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "3308:3306"
+    volumes:
+      - iot_db_data:/var/lib/mysql
+      - ./controllers/database.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mosquitto: # Receptionne les données pour les envoyer vers le Backend de l'ESP-32
+    image: eclipse-mosquitto
+    container_name: futurekawa-mosquitto
+    restart: always
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./futurekawa/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - futurekawa
+
+# -----------
+# BACKEND IOT
+# ----------
+  flask:  # Backend du micro-contrôleur
+    build:
+      context: ./futurekawa
+      dockerfile: Dockerfile
+    container_name: futurekawa-iot_service
+    restart: always
+    ports:
+      - "5001:5000"
+    depends_on:
+      db_iot:
+        condition: service_healthy
+      mosquitto:
+        condition: service_started
+    env_file:
+      - ../.env
+    networks:
+      - futurekawa
+
+volumes:
+  db_data:
+  iot_db:
+
+# -----------
+# Déclaration du network
+# ----------
+networks:
+  futurekawa:
+    driver: bridge

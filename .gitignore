@@ -1,0 +1,12 @@
+# Bloquer les fichiers d'environnement
+**/.env
+.env
+
+# Ignorer les dossiers de dev
+MSPR1/
+futurekawa/
+futureKawaFront/
+
+# Dockerfiles pour le déploiement
+!**/Dockerfile
+!**/dockerfile 
