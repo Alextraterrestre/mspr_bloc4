@@ -29,7 +29,7 @@ pipeline {
                     echo '=== ÉTAPE 4 : Création du fichier config.py à la volée ==='
                     // On recrée le fameux fichier config.py qu'on a corrigé ensemble 
                     // pour que l'API Flask ne crash pas au démarrage !
-                    dir('MSPR1') {
+                    dir('futurekawapp') {
                         sh '''
                         cat << 'EOF' > config.py
                         import os
@@ -69,7 +69,7 @@ pipeline {
                 steps {
                     echo 'Compilation des images Docker (Flask, Front, Bases)...'
                     // Le --no-cache force à tout reconstruire proprement pour le test
-                    sh 'docker compose build --no-cache'
+                    sh 'docker compose build'
                 }
             }
 
