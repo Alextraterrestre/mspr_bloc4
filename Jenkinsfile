@@ -12,7 +12,7 @@ pipeline {
                     git url: 'https://github.com/loanth/futureKawaFront', branch: 'main'
                 }
 
-                echo 'Téléchargement du dépôt de l'API...'
+                echo "Téléchargement du dépôt de l'API..."
                 dir('futurekawapp') {
                     git url: 'https://github.com/Luteix/MSPR1', branch: 'main'
                 }
