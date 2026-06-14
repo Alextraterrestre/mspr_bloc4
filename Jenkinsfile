@@ -69,17 +69,17 @@ pipeline {
                 steps {
                     echo 'Compilation des images Docker (Flask, Front, Bases)...'
                     // Le --no-cache force à tout reconstruire proprement pour le test
-                    sh 'docker compose build'
+                    sh 'docker-compose build'
                 }
             }
 
             stage('4. Tests et Lancement') {
                 steps {
                     echo 'Démarrage de l\'environnement de test...'
-                    sh 'docker compose up -d'
+                    sh 'docker-compose up -d'
                     echo 'Attente de la stabilité des conteneurs...'
                     sh 'sleep 10'
-                    sh 'docker compose ps'
+                    sh 'docker-compose ps'
                 }
             }
             
@@ -87,7 +87,7 @@ pipeline {
                 steps {
                     echo 'Nettoyage de l\'espace de build...'
                     // On éteint après validation pour ne pas bloquer les ressources
-                    sh 'docker compose down'
+                    sh 'docker-compose down'
                 }
             }
         }
