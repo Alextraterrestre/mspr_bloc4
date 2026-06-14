@@ -20,6 +20,7 @@ pipeline {
                     echo 'Téléchargement du dépôt IoT...'
                     dir('futurekawa') {
                         git url: 'https://github.com/quentinchad/futurekawa'
+                    }
                 }
             }
 
@@ -100,4 +101,3 @@ pipeline {
             }
         }
     }
-}
