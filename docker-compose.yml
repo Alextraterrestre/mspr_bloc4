@@ -1,4 +1,4 @@
-name: mspr_bloc_4 # cCommande qui nomme le conteneur parent de l'application
+name: mspr_bloc_4 # Commande qui nomme le conteneur global de l'application
 
 services: # Commande qui liste les  différents services de l'application FutureKawa
 # -----------
@@ -22,7 +22,7 @@ services: # Commande qui liste les  différents services de l'application Future
       - futurekawa
 
 # -----------
-# PARTIE BACKEND
+# PARTIE API / BACKEND
 # ----------
   web: # image du Backend
     build:
@@ -33,14 +33,7 @@ services: # Commande qui liste les  différents services de l'application Future
     ports:
       - "5000:5000"
     environment:
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=secret
-      - DB_NAME=futurekawa
-      - JWT_SECRET_KEY=c0d46ff96e5372e4ea70aed573d1dba656b2564d340d9ba3ea33cbf4afe541b6
-      - JWT_ACCESS_TOKEN_EXPIRES=24
-      - JWT_ALGORITHM="HS256"
-      - BCRYPT_ROUNDS=12
+    - ./MSPR1/.env
     depends_on:
       - db
     networks:
@@ -56,7 +49,9 @@ services: # Commande qui liste les  différents services de l'application Future
     container_name: futurekawa-front
     restart: always
     ports:
-      - "9090:80"
+      - "9090:4173"
+    env_file:
+      - ./futureKawaFront/.env
     depends_on:
       - web
     networks:
@@ -70,18 +65,20 @@ services: # Commande qui liste les  différents services de l'application Future
     image: mysql:8
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
+      - MYSQL_ROOT_PASSWORD=root 
+      - MYSQL_DATABASE=futureKawa
     ports:
       - "3308:3306"
     volumes:
       - iot_db_data:/var/lib/mysql
-      - ./controllers/database.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./futurekawa/controllers/database.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 10
+    networks:
+      - futurekawa
 
   mosquitto: # Receptionne les données pour les envoyer vers le Backend de l'ESP-32
     image: eclipse-mosquitto
@@ -105,19 +102,19 @@ services: # Commande qui liste les  différents services de l'application Future
     restart: always
     ports:
       - "5001:5000"
+    env_file:
+      - ./futurekawa/.env
     depends_on:
       db_iot:
         condition: service_healthy
       mosquitto:
         condition: service_started
-    env_file:
-      - ../.env
     networks:
       - futurekawa
 
 volumes:
   db_data:
-  iot_db:
+  iot_db_data:
 
 # -----------
 # Déclaration du network
