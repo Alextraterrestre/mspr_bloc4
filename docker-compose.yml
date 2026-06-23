@@ -50,8 +50,6 @@ services: # Commande qui liste les  différents services de l'application Future
     restart: always
     ports:
       - "9090:4173"
-    env_file:
-      - ./futureKawaFront/.env
     depends_on:
       - web
     networks:

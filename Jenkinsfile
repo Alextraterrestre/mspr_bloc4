@@ -84,7 +84,6 @@ pipeline {
             stage('5. Nettoyage') {
                 steps {
                     echo 'Nettoyage de l\'espace de build...'
-                    // On éteint après validation pour ne pas bloquer les ressources
                     sh 'docker compose down'
                 }
             }
@@ -92,10 +91,10 @@ pipeline {
 
         post {
             success {
-                echo '🎉 MSPR1 : Pipeline réussi ! Le code est stable et les conteneurs compilent.'
+                echo 'MSPR1 : Pipeline deployée ! Le code est stable et les conteneurs compilent.'
             }
             failure {
-                echo '❌ Erreur sur le pipeline. Vérifie les logs de build.'
+                echo 'Erreur sur la pipeline. Vérifier les logs.'
             }
         }
     }
