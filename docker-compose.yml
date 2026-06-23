@@ -100,8 +100,6 @@ services: # Commande qui liste les  différents services de l'application Future
     restart: always
     ports:
       - "5001:5000"
-    env_file:
-      - ./futurekawa/.env
     depends_on:
       db_iot:
         condition: service_healthy
