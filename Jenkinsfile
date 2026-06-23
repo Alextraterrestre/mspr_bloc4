@@ -13,7 +13,7 @@ pipeline {
                     }
 
                     echo "Téléchargement du dépôt de l'API..."
-                    dir('futurekawapp') {
+                    dir('MSPR1') {
                         git url: 'https://github.com/Luteix/MSPR1', branch: 'main'
                     }
 
@@ -27,8 +27,6 @@ pipeline {
             stage('2. Injection de la configuration sécurisée') {
                 steps {
                     echo '=== ÉTAPE 4 : Création du fichier config.py à la volée ==='
-                    // On recrée le fameux fichier config.py qu'on a corrigé ensemble 
-                    // pour que l'API Flask ne crash pas au démarrage !
                     dir('futurekawapp') {
                         sh '''
                         cat << 'EOF' > config.py
@@ -76,10 +74,10 @@ pipeline {
             stage('4. Tests et Lancement') {
                 steps {
                     echo 'Démarrage de l\'environnement de test...'
-                    sh 'docker-compose up -d'
+                    sh 'docker compose up -d'
                     echo 'Attente de la stabilité des conteneurs...'
                     sh 'sleep 10'
-                    sh 'docker-compose ps'
+                    sh 'docker compose ps'
                 }
             }
             
@@ -87,7 +85,7 @@ pipeline {
                 steps {
                     echo 'Nettoyage de l\'espace de build...'
                     // On éteint après validation pour ne pas bloquer les ressources
-                    sh 'docker-compose down'
+                    sh 'docker compose down'
                 }
             }
         }
