@@ -111,6 +111,7 @@ services: # Commande qui liste les  différents services de l'application Future
 volumes:
   db_data:
   iot_db_data:
+  mosquitto_config:
 
 # -----------
 # Déclaration du network
