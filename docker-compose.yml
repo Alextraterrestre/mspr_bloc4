@@ -85,7 +85,7 @@ services: # Commande qui liste les  différents services de l'application Future
     ports:
       - "1883:1883"
     volumes:
-      - ./futurekawa/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ${WORKSPACE}/futurekawa/mosquitto.conf:/mosquitto/config/mosquitto.conf
     networks:
       - futurekawa
 
