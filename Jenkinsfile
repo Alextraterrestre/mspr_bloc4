@@ -66,8 +66,7 @@ pipeline {
             stage('3. Build de l\'infrastructure') {
                 steps {
                     echo 'Compilation des images Docker (Flask, Front, Bases)...'
-                    // Le --no-cache force à tout reconstruire proprement pour le test
-                    sh 'docker compose build'
+                    sh 'docker compose build --no-cache'
                 }
             }
 
