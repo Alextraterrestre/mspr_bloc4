@@ -66,7 +66,7 @@ pipeline {
             stage('3. Build de l\'infrastructure') {
                 steps {
                     echo 'Compilation des images Docker (Flask, Front, Bases)...'
-                    sh 'docker compose build --no-cache'
+                    sh 'docker compose build'
                 }
             }
 
@@ -83,7 +83,6 @@ pipeline {
             stage('5. Nettoyage') {
                 steps {
                     echo 'Nettoyage de l\'espace de build...'
-                    sh 'docker compose down'
                 }
             }
         }
