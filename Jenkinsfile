@@ -83,7 +83,6 @@ pipeline {
             stage('5. Nettoyage') {
                 steps {
                     echo 'Nettoyage de l\'espace de build...'
-                    sh 'docker compose down'
                 }
             }
         }
