@@ -6,6 +6,8 @@ services: # Commande qui liste les  différents services de l'application Future
 # ========================================================|
   db: # image de la BDD
     image: mysql:8.0
+    env_file: 
+      - ./.env
     container_name: futurekawa-db
     command: --lower_case_table_names=1
     restart: always
@@ -25,6 +27,8 @@ services: # Commande qui liste les  différents services de l'application Future
 # PARTIE API / BACKEND |
 # =====================|
   web: # image du Backend
+    env_file: 
+      - ./.env
     build:
       context: ./MSPR1/    # Commande qui pointe vers le dossier de l'API
       dockerfile: Dockerfile
@@ -61,6 +65,8 @@ services: # Commande qui liste les  différents services de l'application Future
 # PARTIE FRONTEND |
 # ================|
   front: # image du Frontend
+    env_file: 
+      - ./.env
     build:
       context: ./futureKawaFront   # Commande qui pointe vers le dossier du front
       dockerfile: Dockerfile
@@ -68,6 +74,10 @@ services: # Commande qui liste les  différents services de l'application Future
     restart: always
     ports:
       - "9090:4173"
+    environment:
+      VITE_API_URL_BR: ${FRONT_VITE_API_URL_BR}
+      VITE_API_URL_EC: ${FRONT_VITE_API_URL_EC}
+      VITE_API_URL_CO: ${FRONT_VITE_API_URL_CO}
     depends_on:
       - web
     networks:
@@ -79,6 +89,8 @@ services: # Commande qui liste les  différents services de l'application Future
   db_iot:
     container_name: iot_db
     image: mysql:8
+    env_file: 
+      - ./.env
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${IOT_DB_MYSQL_ROOT_PASSWORD}
@@ -98,6 +110,8 @@ services: # Commande qui liste les  différents services de l'application Future
 
   mosquitto: # Receptionne les données pour les envoyer vers le Backend de l'ESP-32
     image: eclipse-mosquitto
+    env_file: 
+      - ./.env
     container_name: futurekawa-mosquitto
     restart: always
     ports:
@@ -156,4 +170,3 @@ volumes:
 networks:
   futurekawa:
     driver: bridge
-    
