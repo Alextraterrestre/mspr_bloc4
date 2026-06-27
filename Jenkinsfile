@@ -98,14 +98,14 @@
                         echo 'Nettoyage de l\'espace de build...'
                         sh 'docker image prune -f'
                         }
-                }
 
-            post {
-                success {
-                    echo 'MSPR1 : Pipeline deployée ! Le code est stable et les conteneurs compilent.'
-                }
-                failure {
-                    echo 'Erreur sur la pipeline. Vérifier les logs.'
+                post {
+                    success {
+                        echo 'MSPR1 : Pipeline deployée ! Le code est stable et les conteneurs compilent.'
+                    }
+                    failure {
+                        echo 'Erreur sur la pipeline. Vérifier les logs.'
+                    }
                 }
             }
         }
