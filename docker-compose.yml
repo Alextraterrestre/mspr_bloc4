@@ -1,17 +1,17 @@
 name: mspr_bloc_4 # Commande qui nomme le conteneur global de l'application
 
 services: # Commande qui liste les  différents services de l'application FutureKawa
-# -----------
-# BDD métier
-# ----------
+# ========================================================|
+# 1. Service BASE DE DONNÉES PRINCIPALE — "futurekawa-db" |
+# ========================================================|
   db: # image de la BDD
     image: mysql:8.0
     container_name: futurekawa-db
     command: --lower_case_table_names=1
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE=futurekawa
+      MYSQL_ROOT_PASSWORD: ${DB_MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_MYSQL_DATABASE}
     ports:
       - "3307:3306"
     volumes:
@@ -21,9 +21,9 @@ services: # Commande qui liste les  différents services de l'application Future
     networks:
       - futurekawa
 
-# -----------
-# PARTIE API / BACKEND
-# ----------
+# =====================|
+# PARTIE API / BACKEND |
+# =====================|
   web: # image du Backend
     build:
       context: ./MSPR1/    # Commande qui pointe vers le dossier de l'API
@@ -33,15 +33,33 @@ services: # Commande qui liste les  différents services de l'application Future
     ports:
       - "5000:5000"
     environment:
-    - ./MSPR1/.env
+      FLASK_DEBUG: ${WEB_FLASK_DEBUG}
+      PORT: ${WEB_PORT}
+      HOST: ${WEB_HOST}
+      SECRET_KEY: ${WEB_SECRET_KEY}
+      DB_TYPE: ${WEB_DB_TYPE}
+      DB_HOST: ${WEB_DB_HOST}
+      DB_PORT: ${WEB_DB_PORT}
+      DB_NAME: ${WEB_DB_NAME}
+      DB_USER: ${WEB_DB_USER}
+      DB_PASSWORD: ${WEB_DB_PASSWORD}
+      DB_ECHO: ${WEB_DB_ECHO}
+      JWT_SECRET_KEY: ${WEB_JWT_SECRET_KEY}
+      JWT_ACCESS_TOKEN_EXPIRES: ${WEB_JWT_ACCESS_TOKEN_EXPIRES}
+      JWT_ALGORITHM: ${WEB_JWT_ALGORITHM}
+      BCRYPT_ROUNDS: ${WEB_BCRYPT_ROUNDS}
+      MJ_APIKEY_PUBLIC: ${WEB_MJ_APIKEY_PUBLIC}
+      MJ_APIKEY_PRIVATE: ${WEB_MJ_APIKEY_PRIVATE}
+      MJ_EMAIL_SENDER: ${WEB_MJ_EMAIL_SENDER}
+      MJ_EMAIL_SENDER_NAME: ${WEB_MJ_EMAIL_SENDER_NAME}
     depends_on:
       - db
     networks:
       - futurekawa
 
-# -----------
-# PARTIE FRONTEND
-# ----------
+# ================|
+# PARTIE FRONTEND |
+# ================|
   front: # image du Frontend
     build:
       context: ./futureKawaFront   # Commande qui pointe vers le dossier du front
@@ -55,16 +73,16 @@ services: # Commande qui liste les  différents services de l'application Future
     networks:
       - futurekawa
 
-# -----------
-# BDD IOT
-# ----------
+# ========|
+# BDD IOT |
+# ========|
   db_iot:
     container_name: iot_db
     image: mysql:8
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=root 
-      - MYSQL_DATABASE=futureKawa
+      MYSQL_ROOT_PASSWORD: ${IOT_DB_MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${IOT_DB_MYSQL_DATABASE}
     ports:
       - "3308:3306"
     volumes:
@@ -100,6 +118,25 @@ services: # Commande qui liste les  différents services de l'application Future
     restart: always
     ports:
       - "5001:5000"
+    environment:
+      FLASK_DEBUG: ${IOT_FLASK_DEBUG}
+      PORT: ${IOT_PORT}
+      HOST: ${IOT_HOST}
+      SECRET_KEY: ${IOT_SECRET_KEY}
+      DB_TYPE: ${IOT_DB_TYPE}
+      DB_HOST: ${IOT_DB_HOST}
+      DB_PORT: ${IOT_DB_PORT}
+      DB_NAME: ${IOT_DB_NAME}
+      DB_USER: ${IOT_DB_USER}
+      DB_PASSWORD: ${IOT_DB_PASSWORD}
+      DB_ECHO: ${IOT_DB_ECHO}
+      MQTT_BROKER: ${IOT_MQTT_BROKER}
+      BREVO_API_KEY: ${IOT_BREVO_API_KEY}
+      BREVO_EMAIL_SENDER: ${IOT_BREVO_EMAIL_SENDER}
+      BREVO_EMAIL_SENDER_NAME: ${IOT_BREVO_EMAIL_SENDER_NAME}
+      ALERT_COOLDOWN_MIN: ${IOT_ALERT_COOLDOWN_MIN}
+      WATCHDOG_SILENCE_MIN: ${IOT_WATCHDOG_SILENCE_MIN}
+      WATCHDOG_INTERVAL_SEC: ${IOT_WATCHDOG_INTERVAL_SEC}
     depends_on:
       db_iot:
         condition: service_healthy
@@ -113,9 +150,10 @@ volumes:
   iot_db_data:
   mosquitto_config:
 
-# -----------
-# Déclaration du network
-# ----------
+# =======================|
+# Déclaration du network |
+# =======================|
 networks:
   futurekawa:
     driver: bridge
+    

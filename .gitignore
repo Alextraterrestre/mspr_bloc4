@@ -1,6 +1,6 @@
 # Bloquer les fichiers d'environnement
 **/.env
-.env
+.env*
 
 # Ignorer les dossiers de dev
 MSPR1/
