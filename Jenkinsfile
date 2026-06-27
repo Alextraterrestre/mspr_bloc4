@@ -1,6 +1,5 @@
     pipeline {
         agent any
-        def testResult 
 
             stages {
 
@@ -111,4 +110,3 @@
             }
         }
     }
-    
