@@ -23,7 +23,7 @@ pipeline {
 
                     dir('MSPR1_test') {
                         echo 'Téléchargement du dépôt API (branche de tests)...'
-                        git url: 'https://github.com/Luteix/MSPR1', branch: 'branche_de_tests'
+                        git url: 'https://github.com/Luteix/MSPR1', branch: 'branche_de_test'
                     }
 
                     dir('futurekawa') {
