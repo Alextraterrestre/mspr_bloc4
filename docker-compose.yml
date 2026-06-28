@@ -1,12 +1,12 @@
 name: mspr_bloc_4 # Commande qui nomme le conteneur global de l'application
 
 services: # Commande qui liste les  différents services de l'application FutureKawa
-# ========================================================|
-# 1. Service BASE DE DONNÉES PRINCIPALE — "futurekawa-db" |
-# ========================================================|
+  # ===========================================================================|
+  # 1. Service BASE DE DONNÉES PRINCIPALE — "futurekawa-db"                    |
+  # ===========================================================================|
   db: # image de la BDD
     image: mysql:8.0
-    env_file: 
+    env_file:
       - ./.env
     container_name: futurekawa-db
     command: --lower_case_table_names=1
@@ -23,14 +23,14 @@ services: # Commande qui liste les  différents services de l'application Future
     networks:
       - futurekawa
 
-# =====================|
-# PARTIE API / BACKEND |
-# =====================|
+  # ===========================================================================|
+  # PARTIE API / BACKEND                                                       |
+   # ==========================================================================|
   web: # image du Backend
-    env_file: 
+    env_file:
       - ./.env
     build:
-      context: ./MSPR1/    # Commande qui pointe vers le dossier de l'API
+      context: ./MSPR1/ # Commande qui pointe vers le dossier de l'API
       dockerfile: Dockerfile
     container_name: futurekawapp
     restart: always
@@ -61,14 +61,14 @@ services: # Commande qui liste les  différents services de l'application Future
     networks:
       - futurekawa
 
-# ================|
-# PARTIE FRONTEND |
-# ================|
+  # ===========================================================================|
+  # PARTIE FRONTEND                                                            |
+  # ===========================================================================|
   front: # image du Frontend
-    env_file: 
+    env_file:
       - ./.env
     build:
-      context: ./futureKawaFront   # Commande qui pointe vers le dossier du front
+      context: ./futureKawaFront # Commande qui pointe vers le dossier du front
       dockerfile: Dockerfile
     container_name: futurekawa-front
     restart: always
@@ -83,15 +83,15 @@ services: # Commande qui liste les  différents services de l'application Future
     networks:
       - futurekawa
 
-# ========|
-# BDD IOT |
-# ========|
+  # ===========================================================================|
+  # BDD IOT                                                                    |
+  # ===========================================================================|
   db_iot:
     container_name: iot_db
-    image: mysql:8
-    env_file: 
-      - ./.env
     restart: always
+    image: mysql:8
+    env_file:
+      - ./.env
     environment:
       MYSQL_ROOT_PASSWORD: ${IOT_DB_MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${IOT_DB_MYSQL_DATABASE}
@@ -110,7 +110,7 @@ services: # Commande qui liste les  différents services de l'application Future
 
   mosquitto: # Receptionne les données pour les envoyer vers le Backend de l'ESP-32
     image: eclipse-mosquitto
-    env_file: 
+    env_file:
       - ./.env
     container_name: futurekawa-mosquitto
     restart: always
@@ -121,10 +121,10 @@ services: # Commande qui liste les  différents services de l'application Future
     networks:
       - futurekawa
 
-# -----------
-# BACKEND IOT
-# ----------
-  flask:  # Backend du micro-contrôleur
+  # ===========================================================================|
+  # BACKEND IOT                                                                |
+  # ===========================================================================|
+  flask: # Backend du micro-contrôleur
     build:
       context: ./futurekawa
       dockerfile: Dockerfile
@@ -132,6 +132,8 @@ services: # Commande qui liste les  différents services de l'application Future
     restart: always
     ports:
       - "5001:5000"
+    env_file:
+      - ./.env
     environment:
       FLASK_DEBUG: ${IOT_FLASK_DEBUG}
       PORT: ${IOT_PORT}
@@ -164,9 +166,9 @@ volumes:
   iot_db_data:
   mosquitto_config:
 
-# =======================|
-# Déclaration du network |
-# =======================|
+# =============================================================================|
+# Déclaration du network                                                       |
+# =============================================================================|
 networks:
   futurekawa:
     driver: bridge
