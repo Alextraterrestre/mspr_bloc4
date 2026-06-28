@@ -83,7 +83,7 @@ pipeline {
             stage("4. Tests : Tests unitaires") {
                 steps {
                     script {
-                        def testResult = sh script: 'docker compose run --rm -v "$(pwd)/MSPR1_test:/app" web sh -c "pip install pytest --break-system-packages && pytest"',
+                        def testResult = sh script:  'docker compose run --rm -v "$(pwd)/MSPR1_test:/app" web sh -c "echo \"=== Contenu de /app ===\" && ls -la /app/ && echo \"=== Contenu de /app/test_unitaire ===\" && ls -la /app/test_unitaire/ && pip install pytest --break-system-packages && pytest"',
                         returnStatus: true
                         if (testResult != 0) {
                             error "Les tests unitaires ont échoué (code d'erreur: ${testResult})"
