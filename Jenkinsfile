@@ -21,6 +21,11 @@ pipeline {
                         git url: 'https://github.com/Luteix/MSPR1', branch: 'main'
                     }
 
+                    dir('MSPR1_test') {
+                        echo 'Téléchargement du dépôt API (branche de tests)...'
+                        git url: 'https://github.com/Luteix/MSPR1', branch: 'branche_de_tests'
+                    }
+
                     dir('futurekawa') {
                         echo 'Téléchargement du dépôt IoT...'
                         git url: 'https://github.com/quentinchad/futurekawa', branch: 'main'
@@ -78,7 +83,7 @@ pipeline {
             stage("4. Tests : Tests unitaires") {
                 steps {
                     script {
-                        def testResult = sh script: 'docker compose run --rm web pytest',
+                        def testResult = sh script: 'docker compose run --rm -v "$(pwd)/MSPR1_test:/app" web sh -c "pip install pytest --break-system-packages && pytest"',
                         returnStatus: true
                         if (testResult != 0) {
                             error "Les tests unitaires ont échoué (code d'erreur: ${testResult})"
@@ -105,7 +110,7 @@ pipeline {
                 }
             }
         }
-        
+
         post {
             always {
                 // Le bloc post/always s'exécute QUOI QU'IL ARRIVE (succès ou échec des tests)
