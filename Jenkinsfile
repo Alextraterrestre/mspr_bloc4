@@ -37,7 +37,7 @@ pipeline {
                 steps {
                     echo 'Mise en place du fichier .env et de config.py'
                     sh 'cp $SECRET_ENV .env'
-                    dir("futurekawapp") {
+                    dir("fMSPR1") {
                         sh '''
                         cat << 'EOF' > config.py
                         import os
