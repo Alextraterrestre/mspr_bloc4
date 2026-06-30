@@ -15,7 +15,7 @@ services: # Commande qui liste les  différents services de l'application Future
       MYSQL_ROOT_PASSWORD: ${DB_MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_MYSQL_DATABASE}
     ports:
-      - "3307:3306"
+      - ":3306"
     volumes:
       - db_data:/var/lib/mysql
       - ./futurekawa.sql:/docker-entrypoint-initdb.d/1_structure.sql

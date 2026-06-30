@@ -9,4 +9,8 @@ futureKawaFront/
 
 # Dockerfiles pour le déploiement
 !**/Dockerfile
-!**/dockerfile 
+!**/dockerfile
+
+
+# Penses bêtes
+RESUME.md
