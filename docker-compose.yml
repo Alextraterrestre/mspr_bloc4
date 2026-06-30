@@ -31,7 +31,7 @@ services: # Commande qui liste les  différents services de l'application Future
       - ./.env
     build:
       context: ./MSPR1/ # Commande qui pointe vers le dossier de l'API
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
     container_name: futurekawapp
     restart: always
     ports:
