@@ -70,6 +70,10 @@ services: # Commande qui liste les  différents services de l'application Future
     build:
       context: ./futureKawaFront # Commande qui pointe vers le dossier du front
       dockerfile: Dockerfile
+      args:
+        VITE_API_URL_BR: ${FRONT_VITE_API_URL_BR}
+        VITE_API_URL_EC: ${FRONT_VITE_API_URL_EC}
+        VITE_API_URL_CO: ${FRONT_VITE_API_URL_CO}
     container_name: futurekawa-front
     restart: always
     ports:
