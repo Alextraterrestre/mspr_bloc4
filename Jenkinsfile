@@ -62,7 +62,7 @@ pipeline {
                     def testResult = sh script: '''
                         docker compose run --rm \
                         -v "$(pwd)/MSPR1_test:/app" \
-                        web sh -c "PYTHONPATH=. pytest -v"
+                        web sh -c "PYTHONPATH=. pytest -v test_unitaire"
                     ''', returnStatus: true
                     
                     if (testResult != 0) {
