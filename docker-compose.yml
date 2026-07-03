@@ -105,7 +105,7 @@ services: # Commande qui liste les  différents services de l'application Future
       - iot_db_data:/var/lib/mysql
       - ./futurekawa/controllers/database.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${IOT_DB_MYSQL_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 10
