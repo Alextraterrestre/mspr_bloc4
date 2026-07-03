@@ -6,6 +6,7 @@ pipeline {
     }
 
         stages {
+            
             stage('1. Récupération du code') {
                 steps {
                     echo '=== CLONAGE DE LA BRANCHE DE TEST ==='
