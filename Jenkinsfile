@@ -58,15 +58,10 @@ pipeline {
             steps {
                 script {
                     def testResult = sh script: '''
-                        docker compose run --rm -v "$(pwd)/MSPR1_test:/app" web sh -c "
-                            echo '=== Contenu de /app ==='
-                            ls -la /app/
-                            echo '=== Contenu de /app/test_unitaire ==='
-                            ls -la /app/test_unitaire/
-                            python -m pytest test_unitaire/ -v
-                            pytest
-                        "
+                        docker compose run --rm web sh -c \
+                        "pytest -v"
                     ''', returnStatus: true
+                    
                     if (testResult != 0) {
                         error "Les tests unitaires ont échoué (code d'erreur: ${testResult})"
                     }
