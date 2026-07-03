@@ -71,18 +71,18 @@ pipeline {
                     sh 'cp $SECRET_ENV .env'
                 }
             }
+        }
 
-        post {
-            always {
-                echo 'Suppression sécurisée du fichier .env du workspace...'
-                sh 'rm -f .env'
-            }
-            success {
-                echo 'MSPR1 : Pipeline deployée ! Le code est stable et les conteneurs compilent.'
-            }
-            failure {
-                echo 'Erreur sur la pipeline. Vérifier les logs.'
-            }
+    post {
+        always {
+            echo 'Suppression sécurisée du fichier .env du workspace...'
+            sh 'rm -f .env'
+        }
+        success {
+            echo 'MSPR1 : Pipeline deployée ! Le code est stable et les conteneurs compilent.'
+        }
+        failure {
+            echo 'Erreur sur la pipeline. Vérifier les logs.'
         }
     }
 }
