@@ -1,9 +1,8 @@
 name: mspr_bloc_4 # Commande qui nomme le conteneur global de l'application
 
 services: # Commande qui liste les  différents services de l'application FutureKawa
-  # ===========================================================================|
-  # 1. Service BASE DE DONNÉES PRINCIPALE — "futurekawa-db"                    |
-  # ===========================================================================|
+  # 1. Service BASE DE DONNÉES PRINCIPALE — "futurekawa-db"
+
   db: # image de la BDD
     image: mysql:8.0
     env_file:
@@ -23,9 +22,8 @@ services: # Commande qui liste les  différents services de l'application Future
     networks:
       - futurekawa
 
-  # ===========================================================================|
-  # PARTIE API / BACKEND                                                       |
-  # ===========================================================================|
+  # PARTIE API / BACKEND
+
   web: # image du Backend
     env_file:
       - ./.env
@@ -61,9 +59,8 @@ services: # Commande qui liste les  différents services de l'application Future
     networks:
       - futurekawa
 
-  # ===========================================================================|
-  # PARTIE FRONTEND                                                            |
-  # ===========================================================================|
+  # PARTIE FRONTEND
+
   front: # image du Frontend
     env_file:
       - ./.env
@@ -87,9 +84,8 @@ services: # Commande qui liste les  différents services de l'application Future
     networks:
       - futurekawa
 
-  # ===========================================================================|
-  # BDD IOT                                                                    |
-  # ===========================================================================|
+  # BDD IOT
+
   db_iot:
     container_name: iot_db
     restart: always
@@ -105,7 +101,17 @@ services: # Commande qui liste les  différents services de l'application Future
       - iot_db_data:/var/lib/mysql
       - ./futurekawa/controllers/database.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${IOT_DB_MYSQL_ROOT_PASSWORD}"]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${IOT_DB_MYSQL_ROOT_PASSWORD}",
+        ]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -125,9 +131,8 @@ services: # Commande qui liste les  différents services de l'application Future
     networks:
       - futurekawa
 
-  # ===========================================================================|
-  # BACKEND IOT                                                                |
-  # ===========================================================================|
+  # BACKEND IOT
+
   flask: # Backend du micro-contrôleur
     build:
       context: ./futurekawa
@@ -170,9 +175,8 @@ volumes:
   iot_db_data:
   mosquitto_config:
 
-# =============================================================================|
-# Déclaration du network                                                       |
-# =============================================================================|
+# Déclaration du network
+
 networks:
   futurekawa:
     driver: bridge
