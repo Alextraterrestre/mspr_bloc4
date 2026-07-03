@@ -43,7 +43,14 @@ pipeline {
         stage("3. Build de l\'infrastructure") {
             steps {
                 echo 'Compilation des images Docker (Flask, Front, Bases)...'
-                sh 'docker compose build --no-cache'
+                retry(3) {
+                    sh 'docker compose build db'
+                    sh 'docker compose build mosquitto'
+                    sh 'docker compose build web'
+                    sh 'docker compose build front'
+                    sh 'docker compose build db_iot'
+                    sh 'docker compose build flask'
+                }
             }
         }
 
