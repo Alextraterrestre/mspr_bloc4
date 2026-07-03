@@ -36,7 +36,7 @@ pipeline {
         stage("2. Injection de la configuration sécurisée") {
             steps {
                 echo 'Mise en place du fichier .env et de config.py'
-                sh 'cp $SECRET_ENV .env'
+                sh 'cp $SECRET_ENV .env && cat .env'
             }
         }
 
