@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SECRET_ENV = credentials('futurkawa.env')
+        SECRET_ENV = credentials('futurekawa.env')
     }
 
         stages {
