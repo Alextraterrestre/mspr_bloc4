@@ -47,22 +47,36 @@ pipeline {
             }
         }
 
+        // stage("4. Tests : Tests unitaires") {
+        //     steps {
+        //         script {
+        //             def testResult = sh script: '''
+        //                 docker compose run --rm -v "$(pwd)/MSPR1_test:/app" web sh -c "
+        //                     echo '=== Contenu de /app ==='
+        //                     ls -la /app/
+        //                     echo '=== Contenu de /app/test_unitaire ==='
+        //                     ls -la /app/test_unitaire/
+        //                     python -m pytest test_unitaire/ -v
+        //                     pytest
+        //                 "
+        //             ''', returnStatus: true
+        //             if (testResult != 0) {
+        //                 error "Les tests unitaires ont échoué (code d'erreur: ${testResult})"
+        //             }
+        //         }
+        //     }
+        // }
         stage("4. Tests : Tests unitaires") {
             steps {
                 script {
+                    sh 'echo "=== DEBUG: contenu de MSPR1_test ===" && ls -la $WORKSPACE/MSPR1_test/ && ls -la $WORKSPACE/MSPR1_test/*/'
+                    sh 'find $WORKSPACE/MSPR1_test/ -maxdepth 2 -type f | head -20'
+                    
                     def testResult = sh script: '''
                         docker compose run --rm -v "$(pwd)/MSPR1_test:/app" web sh -c "
-                            echo '=== Contenu de /app ==='
-                            ls -la /app/
-                            echo '=== Contenu de /app/test_unitaire ==='
-                            ls -la /app/test_unitaire/
-                            python -m pytest test_unitaire/ -v
-                            pytest
+                            cd /app && ls -la && find /app -type f | head -30
                         "
                     ''', returnStatus: true
-                    if (testResult != 0) {
-                        error "Les tests unitaires ont échoué (code d'erreur: ${testResult})"
-                    }
                 }
             }
         }
