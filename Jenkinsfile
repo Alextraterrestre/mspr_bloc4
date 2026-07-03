@@ -37,35 +37,6 @@ pipeline {
             steps {
                 echo 'Mise en place du fichier .env et de config.py'
                 sh 'cp $SECRET_ENV .env'
-//                     dir("MSPR1") {
-//                         writeFile file: 'config.py', text: '''import os
-
-// class Config:
-//     """Configuration generee automatiquement par Jenkins"""
-//     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'c0d46ff96e5372e4ea70aed573d1dba656b2564d340d9ba3ea33cbf4afe541b6')
-//     JWT_ACCESS_TOKEN_EXPIRES = int(os.getenv('JWT_ACCESS_TOKEN_EXPIRES', 24))
-//     JWT_ALGORITHM = os.getenv('JWT_ALGORITHM', 'HS256')
-//     BCRYPT_ROUNDS = int(os.getenv('BCRYPT_ROUNDS', 12))
-//     DB_USER = os.getenv('DB_USER', 'root')
-//     DB_PASSWORD = os.getenv('DB_PASSWORD', 'secret')
-//     DB_HOST = os.getenv('DB_HOST', 'db')
-//     DB_NAME = os.getenv('DB_NAME', 'futurekawa')
-//     SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
-//     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-// class DevelopmentConfig(Config):
-//     DEBUG = True
-
-// class ProductionConfig(Config):
-//     DEBUG = False
-//     JWT_ACCESS_TOKEN_EXPIRES = 8
-
-// config = {
-//     'development': DevelopmentConfig,
-//     'production': ProductionConfig,
-//     'default': DevelopmentConfig
-// }'''
-//                     }
             }
         }
 
@@ -85,7 +56,7 @@ pipeline {
                             ls -la /app/
                             echo '=== Contenu de /app/test_unitaire ==='
                             ls -la /app/test_unitaire/
-                            pip install pytest --break-system-packages
+                            python -m pytest test_unitaire/ -v
                             pytest
                         "
                     ''', returnStatus: true
