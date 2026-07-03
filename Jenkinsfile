@@ -57,14 +57,18 @@ pipeline {
         stage("4. Tests : Tests unitaires") {
             steps {
                 script {
+                    echo 'Exécution des tests sur la branche_de_test via sur-encrement de volume...'
+                    // On monte le dossier MSPR1_test sur /app et on force le PYTHONPATH
                     def testResult = sh script: '''
-                        docker compose run --rm web sh -c \
-                        "pytest -v"
+                        docker compose run --rm \
+                        -v "$(pwd)/MSPR1_test:/app" \
+                        web sh -c "PYTHONPATH=. pytest -v"
                     ''', returnStatus: true
                     
                     if (testResult != 0) {
-                        error "Les tests unitaires ont échoué (code d'erreur: ${testResult})"
+                        error "Les tests unitaires sur la branche_de_test ont échoué (code d'erreur: ${testResult}). Déploiement annulé."
                     }
+                    echo 'Tests validés avec succès ! Prêt pour le déploiement de main.'
                 }
             }
         }
