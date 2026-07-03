@@ -68,6 +68,19 @@ pipeline {
                     sh 'cp $SECRET_ENV .env'
                 }
             }
+            stage("6. Build & Déploiement de l'application futurekawa") {
+                steps {
+                    echo '=== DEPLOIEMENT DE LA PRODUCTION ==='
+                    retry(3) {
+                        sh 'docker compose build'
+                    }
+                    echo 'Démarrage officiel de l\'application en arrière-plan...'
+                    sh 'docker compose up -d'
+                    
+                    sh 'sleep 10'
+                    sh 'docker compose ps'
+                }
+            }
         }
 
     post {
