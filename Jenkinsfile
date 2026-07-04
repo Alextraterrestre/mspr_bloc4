@@ -6,22 +6,38 @@ pipeline {
     }
 
     triggers {
-        githubPush()
+         pollSCM('H H/12 * * *')
     }
 
         stages {
 
             stage('1. Récupération du code') {
                 steps {
-                    echo '=== CLONAGE DE LA BRANCHE DE TEST ==='
+                    echo '=== CLONAGE DES DIFFÉRENTS DEPOS GIT ==='
                     
-                    dir('futureKawaFront') { git url: 'https://github.com/loanth/futureKawaFront', branch: 'main' }
+                    dir('futureKawaFront') {
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: [[name: '*/main']],
+                            userRemoteConfigs: [[url: 'https://github.com/loanth/futureKawaFront']]
+                        ])
+                    }
 
-                    dir('futurekawa') { git url: 'https://github.com/quentinchad/futurekawa', branch: 'main' }
+                    dir('futurekawa') {
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: [[name: '*/main']],
+                            userRemoteConfigs: [[url: 'https://github.com/quentinchad/futurekawa']]
+                        ])
+                    }
                     
                     dir('MSPR1') {
-                        echo 'Téléchargement de l\'API (Branche de test)...'
-                        git url: 'https://github.com/Luteix/MSPR1', branch: 'branche_de_test'
+                        echo 'Téléchargement de la Branche de test de l\'API...'
+                         checkout([
+                            $class: 'GitSCM',
+                            branches: [[name: '*/branche_de_test']],
+                            userRemoteConfigs: [[url: 'https://github.com/Luteix/MSPR1']]
+                        ])
                     }
                 }
             }
@@ -43,7 +59,6 @@ pipeline {
                 steps {
                     script {
                         echo '=== LANCEMENT DES TESTS UNITAIRES ==='
-
                         def testResult = sh script: 'docker compose run --rm web sh -c "pytest -v -s"', returnStatus: true
                         if (testResult != 0) {
                             error "Les tests unitaires ont échoué avec le code ${testResult}. Le pipeline s'arrête ici."
