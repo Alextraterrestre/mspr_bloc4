@@ -5,8 +5,12 @@ pipeline {
         SECRET_ENV = credentials('futurekawa.env')
     }
 
+    triggers {
+        githubPush()
+    }
+
         stages {
-            
+
             stage('1. Récupération du code') {
                 steps {
                     echo '=== CLONAGE DE LA BRANCHE DE TEST ==='
