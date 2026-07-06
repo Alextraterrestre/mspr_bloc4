@@ -115,6 +115,7 @@ services: # Commande qui liste les  différents services de l'application Future
       interval: 10s
       timeout: 5s
       retries: 10
+      start_period: 60s
     networks:
       - futurekawa
 
