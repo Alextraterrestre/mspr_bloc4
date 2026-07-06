@@ -69,15 +69,12 @@ pipeline {
             }
 
             stage('3.2 vérification du code front (ESLint)') {
-                agent {
-                    docker { image 'node:20-alpine' }
-                }
-                    steps {
-                        dir('futureKawaFront') {
-                            sh 'npm ci'
-                            sh 'npm run lint'
-                        }
+                steps {
+                    dir('futureKawaFront') {
+                        sh 'npm ci'
+                        sh 'npm run lint'
                     }
+                }
             }
             
 
