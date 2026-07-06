@@ -28,11 +28,13 @@ pipeline {
                     }
                     
                     dir('futureKawaFront') {
-                        checkout([
-                            $class: 'GitSCM',
-                            branches: [[name: '*/main']],
-                            userRemoteConfigs: [[url: 'https://github.com/loanth/futureKawaFront']]
-                        ])
+                        sh 'pwd && ls -la'
+                        sh 'docker run --rm -v $(pwd):/app -w /app node:20-alpine sh -c "ls -la && npm ci && npm run lint"'
+                        // checkout([
+                        //     $class: 'GitSCM',
+                        //     branches: [[name: '*/main']],
+                        //     userRemoteConfigs: [[url: 'https://github.com/loanth/futureKawaFront']]
+                        // ])
                     }
 
                     dir('futurekawa') {
