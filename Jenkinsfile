@@ -66,7 +66,7 @@ pipeline {
                 }
             }
 
-            stage("3. Phase de Test : Exécution des tests unitaires (pytest)") {
+            stage("3.1 Phase de Test : Exécution des tests unitaires (pytest)") {
                 steps {
                     script {
                         echo '=== LANCEMENT DES TESTS UNITAIRES ==='
@@ -82,10 +82,8 @@ pipeline {
             stage('3.2 vérification du code front (ESLint)') {
                 steps {
                     dir('futureKawaFront') {
-                         dir('futureKawaFront') {
-                            sh 'docker build -f Dockerfile -t futurekawa-front-lint .'
-                            sh 'docker run --rm futurekawa-front-lint npm run lint'
-                        }
+                        sh 'docker build -f Dockerfile -t futurekawa-front-lint .'
+                        sh 'docker run --rm futurekawa-front-lint npm run lint'
                     }
                 }
             }
