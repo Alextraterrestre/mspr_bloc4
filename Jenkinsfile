@@ -86,19 +86,20 @@ pipeline {
                         sh 'docker build -f Dockerfile -t futurekawa-front-lint .'
                         sh 'docker run --rm futurekawa-front-lint npm run lint'
 
-                    echo '=== LINTER ==='
+                        echo '=== LINTER ==='
                         def lintResult = sh(
                             script: 'docker run --rm futurekawa-front-lint:${BUILD_NUMBER} npm run lint 2>&1 | tee lint-report.log',
                             returnStatus: true
                         )
 
-                    echo '=== LOGS DU LINTER ==='
-                        sh 'cat lint-report.log'
+                        echo '=== LOGS DU LINTER ==='
+                            sh 'cat lint-report.log'
 
-                    if (lintResult == 0) {
-                        echo 'LINT VALIDÉ : Le code front respecte les règles ESLint.'
-                    } else {
-                        error "LINT EN ERREUR : Des erreurs ESLint ont été détectées (code retour ${lintResult}). Voir les logs ci-dessus."
+                        if (lintResult == 0) {
+                            echo 'LINT VALIDÉ : Le code front respecte les règles ESLint.'
+                        } else {
+                            error "LINT EN ERREUR : Des erreurs ESLint ont été détectées (code retour ${lintResult}). Voir les logs ci-dessus."
+                        }
                     }
                 }
             }
