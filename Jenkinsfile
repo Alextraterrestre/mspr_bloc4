@@ -16,12 +16,12 @@ pipeline {
                 steps {
                     echo '=== CLONAGE DES DIFFÉRENTS DEPOS GIT ==='
 
-                    dir('mspr_bloc4') {  // Remplacez par le nom de votre dépôt
+                    dir('mspr_bloc4') {  
                         checkout([
                             $class: 'GitSCM',
                             branches: [[name: '*/main']],
                             userRemoteConfigs: [[
-                                url: 'https://github.com/Alextraterrestre/mon-projet-jenkins.git',
+                                url: 'https://github.com/Alextraterrestre/mspr_bloc4.git',
                                 credentialsId: 'github-api-token'
                             ]]
                         ])
