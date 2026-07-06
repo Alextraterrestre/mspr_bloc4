@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         SECRET_ENV = credentials('futurekawa.env')
+         GITHUB_TOKEN = credentials('github-api-token')
     }
 
     triggers {
