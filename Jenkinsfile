@@ -1,6 +1,9 @@
 pipeline {
     agent any
 
+     githubApiUsage('mspr_bloc4')
+    }
+
     environment {
         SECRET_ENV = credentials('futurekawa.env')
          GITHUB_TOKEN = credentials('github-api-token')
