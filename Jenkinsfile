@@ -25,7 +25,7 @@ pipeline {
                             branches: [[name: '*/main']],
                             userRemoteConfigs: [[
                                 url: 'https://github.com/Alextraterrestre/mon-projet-jenkins.git',
-                                credentialsId: 'github-api-token'
+                                credentialsId: 'GitHub API acess Token For Jenkin'
                             ]]
                         ])
                     }
