@@ -89,7 +89,7 @@ pipeline {
 
                             echo '=== LINTER ==='
                             def lintResult = sh(
-                                script: 'docker run --rm futurekawa-front-lint:${BUILD_NUMBER} npm run lint 2>&1 | tee lint-report.log',
+                                script: 'docker run --rm futurekawa-front-lint:latest npm run lint 2>&1 | tee lint-report.log',
                                 returnStatus: true
                             )
 
