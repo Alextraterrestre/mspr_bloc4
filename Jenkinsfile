@@ -71,7 +71,7 @@ pipeline {
             stage('3.2 vérification du code front (ESLint)') {
                 steps {
                     dir('futureKawaFront') {
-                       sh 'docker run --rm -v $(pwd):/app -w /app node:20-alpine sh -c "npm ci && npm run lint"'
+                       sh "docker run --rm -v $(pwd):/app -w /app node:20-alpine sh -c 'npm ci && npm run lint'"
                     }
                 }
             }
