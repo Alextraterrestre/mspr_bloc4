@@ -15,6 +15,17 @@ pipeline {
             stage('1. Récupération du code') {
                 steps {
                     echo '=== CLONAGE DES DIFFÉRENTS DEPOS GIT ==='
+
+                    dir('mspr_bloc4') {  // Remplacez par le nom de votre dépôt
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: [[name: '*/main']],
+                            userRemoteConfigs: [[
+                                url: 'https://github.com/Alextraterrestre/mon-projet-jenkins.git',
+                                credentialsId: 'github-api-token'
+                            ]]
+                        ])
+                    }
                     
                     dir('futureKawaFront') {
                         checkout([
