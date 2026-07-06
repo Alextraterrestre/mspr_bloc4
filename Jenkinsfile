@@ -1,7 +1,8 @@
 pipeline {
     agent any
 
-     githubApiUsage('mspr_bloc4')
+     options {
+        githubApiUsage('mspr_bloc4')  // Force l'utilisation du GitHub Server
     }
 
     environment {
