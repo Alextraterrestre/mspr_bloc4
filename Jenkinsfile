@@ -79,7 +79,7 @@ pipeline {
                         }
                     }
             }
-            }
+            
 
             stage("4. Nettoyage du Workspace de Test") {
                 steps {
