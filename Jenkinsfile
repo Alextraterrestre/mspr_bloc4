@@ -19,10 +19,10 @@ pipeline {
                     dir('mspr_bloc4') {  
                         checkout([
                             $class: 'GitSCM',
-                            branches: [[name: '*/main']],
+                            branches: [[name: '*/master']],
                             userRemoteConfigs: [[
                                 url: 'https://github.com/Alextraterrestre/mspr_bloc4.git',
-                                credentialsId: 'github-api-token'
+                                credentialsId: 'git-tok'
                             ]]
                         ])
                     }
